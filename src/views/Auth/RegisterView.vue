@@ -21,7 +21,15 @@ const handleRegister = () => {
     </Motion>
 
     <Motion :initial="{ opacity: 0, y: 50 }" :animate="{ opacity: 1, y: 0 }" :transition="{ delay: 0.5 }">
-      <div class="bg-[#002128] p-16 rounded-2xl shadow-2xl w-full max-w-2xl">
+      <div class="bg-[#002128] relative p-16 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
+
+        <!-- Háttérkép -->
+    <img 
+      src="@/assets/images/festmeny.png" 
+      alt="Animated Background" 
+      class="absolute inset-0 w-full h-full object-cover opacity-20"
+    />
+        
         <h2 class="text-5xl font-bold text-[#FDFDFD] mb-10 text-center">Regisztráció</h2>
         <form @submit.prevent="handleLogin">
           <div class="mb-6">
