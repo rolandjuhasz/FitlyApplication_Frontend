@@ -1,16 +1,17 @@
 <script setup>
-import { ref } from "vue";
-import { Motion } from "@motionone/vue";
-import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
+import { onMounted, reactive } from "vue";
 
-const email = ref("");
-const password = ref("");
-const router = useRouter();
+const { errors } = storeToRefs(useAuthStore());
+const { authenticate } = useAuthStore();
 
-const handleLogin = () => {
-  console.log("Bejelentkezés:", email.value, password.value);
-  router.push("/");
-};
+const formData = reactive({
+  email: "",
+  password: "",
+});
+
+onMounted(() => (errors.value = {}));
 </script>
 
 <template>
@@ -43,7 +44,7 @@ const handleLogin = () => {
         <input
           type="email"
           id="email"
-          v-model="email"
+           v-model="formData.email"
           placeholder="Email"
           class="w-full px-6 py-4 bg-[#131213] text-[#ffffff] rounded-lg focus:outline-none focus:ring-3 focus:ring-[#1A3E4A] text-lg"
           required
@@ -54,7 +55,7 @@ const handleLogin = () => {
         <input
           type="password"
           id="password"
-          v-model="password"
+          v-model="formData.password"
           placeholder="Jelszó"
           class="w-full px-6 py-4 bg-[#131213] text-[#FDFDFD] rounded-lg focus:outline-none focus:ring-3 focus:ring-[#1A3E4A] text-lg"
           required

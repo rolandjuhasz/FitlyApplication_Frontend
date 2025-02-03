@@ -1,17 +1,20 @@
 <script setup>
-import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
+import { onMounted, reactive } from "vue";
 import { Motion } from "@motionone/vue";
-import { useRouter } from "vue-router";
 
-const name = ref("");
-const email = ref("");
-const password = ref("");
-const router = useRouter();
+const { errors } = storeToRefs(useAuthStore());
+const { authenticate } = useAuthStore();
 
-const handleRegister = () => {
-  console.log("Regisztráció:", name.value, email.value, password.value);
-  router.push("/login");
-};
+const formData = reactive({
+  name: "",
+  email: "",
+  password: "",
+  password_confirmation: "",
+});
+
+onMounted(() => (errors.value = {}));
 </script>
 
 <template>
@@ -24,43 +27,68 @@ const handleRegister = () => {
       <div class="bg-[#002128] relative p-16 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
 
         <!-- Háttérkép -->
-    <img 
-      src="@/assets/images/festmeny.png" 
-      alt="Animated Background" 
-      class="absolute inset-0 w-full h-full object-cover opacity-20"
-    />
+
         
         <h2 class="text-5xl font-bold text-[#FDFDFD] mb-10 text-center">Regisztráció</h2>
-        <form @submit.prevent="handleLogin">
+        <form @submit.prevent="authenticate('register', formData)">
           <div class="mb-6">
             <label for="name" class="block text-[#ffffff] mb-3 text-xl">Teljes név</label>
             <input
               type="text"
               id="name"
-              v-model="name"
+              v-model="formData.name"
               placeholder="Teljes név"
               class="w-full px-6 py-4 bg-[#131213] text-[#ffffff] rounded-lg focus:outline-none focus:ring-3 focus:ring-[#1A3E4A] text-lg"
               required
             />
+            <p
+            class="text-red-500 text-sm mt-2"
+            v-if="errors.name && errors.name[0]"
+          >
+            {{ errors.name[0] }}
+          </p>
           </div>
           <div class="mb-6">
             <label for="email" class="block text-[#ffffff] mb-2 text-lg">Email cím</label>
             <input
               type="email"
               id="email"
-              v-model="email"
+              v-model="formData.email"
               placeholder="Email"
               class="w-full px-6 py-4 bg-[#131213] text-[#ffffff] rounded-lg focus:outline-none focus:ring-3 focus:ring-[#1A3E4A] text-lg"
               required
             />
+            <p
+            class="text-red-500 text-sm mt-2"
+            v-if="errors.email && errors.email[0]"
+          >
+            {{ errors.email[0] }}
+          </p>
           </div>
           <div class="mb-8">
             <label for="password" class="block text-[#ffffff] mb-2 text-lg">Jelszó</label>
             <input
               type="password"
               id="password"
-              v-model="password"
+              v-model="formData.password"
               placeholder="Jelszó"
+              class="w-full px-6 py-4 bg-[#131213] text-[#FDFDFD] rounded-lg focus:outline-none focus:ring-3 focus:ring-[#1A3E4A] text-lg"
+              required
+            />
+            <p
+            class="text-red-500 text-sm mt-2"
+            v-if="errors.password && errors.password[0]"
+          >
+            {{ errors.password[0] }}
+          </p>
+          </div>
+          <div class="mb-8">
+            <label for="password" class="block text-[#ffffff] mb-2 text-lg">Jelszó megerősítése</label>
+            <input
+              type="password_confirmation"
+              id="password_password_confirmation"
+              v-model="formData.password_confirmation"
+              placeholder="Jelszó megerősítése"
               class="w-full px-6 py-4 bg-[#131213] text-[#FDFDFD] rounded-lg focus:outline-none focus:ring-3 focus:ring-[#1A3E4A] text-lg"
               required
             />
