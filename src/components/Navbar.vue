@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
 
+const authStore = useAuthStore()
 const isMenuOpen = ref(false);
 
 const toggleMenu = () => {
@@ -21,13 +23,17 @@ const toggleMenu = () => {
       <li><RouterLink :to="{ name: 'home' }" class="nav-link">Home</RouterLink></li>
       <li><RouterLink :to="{ name: 'home' }" class="nav-link">Workouts</RouterLink></li>
       <li><RouterLink :to="{ name: 'home' }" class="nav-link">Nutrition</RouterLink></li>
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link">Social media</RouterLink></li>
+      <li><RouterLink :to="{ name: 'social' }" class="nav-link">Social media</RouterLink></li>
     </ul>
 
-    <div class="hidden md:flex space-x-4">
+    <div class="hidden md:flex space-x-4" v-if="!authStore.user">
       <RouterLink :to="{name: 'register'}" class="auth-btn">Register</RouterLink>
       <RouterLink :to="{name: 'login'}" class="auth-btn bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Login</RouterLink>
     </div>
+
+    <form @submit.prevent="authStore.logout" v-if="authStore.user">
+          <button class="auth-btn">Logout</button>
+        </form>
 
     <button @click="toggleMenu" class="md:hidden text-3xl text-white">
       ☰

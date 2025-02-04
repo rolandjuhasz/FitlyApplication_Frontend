@@ -7,3 +7,9 @@ import { RouterView } from "vue-router";
   <Navbar />
   <RouterView />
 </template>
+
+<style scoped>
+main {
+  padding-top: 80px;
+}
+</style>

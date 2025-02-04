@@ -2,6 +2,7 @@
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import { onMounted, reactive } from "vue";
+import { Motion } from "@motionone/vue";
 
 const { errors } = storeToRefs(useAuthStore());
 const { authenticate } = useAuthStore();
@@ -38,7 +39,7 @@ onMounted(() => (errors.value = {}));
     />
 
     <h2 class="text-5xl font-bold text-[#FDFDFD] mb-10 text-center relative z-10">Bejelentkezés</h2>
-    <form @submit.prevent="handleLogin" class="relative z-10">
+    <form @submit.prevent="authenticate('login', formData)" class="relative z-10">
       <div class="mb-6">
         <label for="email" class="block text-[#ffffff] mb-2 text-lg">Email cím</label>
         <input
@@ -49,6 +50,7 @@ onMounted(() => (errors.value = {}));
           class="w-full px-6 py-4 bg-[#131213] text-[#ffffff] rounded-lg focus:outline-none focus:ring-3 focus:ring-[#1A3E4A] text-lg"
           required
         />
+        <p class="error" v-if="errors.email && errors.email[0]">{{ errors.email[0] }}</p>
       </div>
       <div class="mb-8">
         <label for="password" class="block text-[#ffffff] mb-2 text-lg">Jelszó</label>
@@ -60,6 +62,7 @@ onMounted(() => (errors.value = {}));
           class="w-full px-6 py-4 bg-[#131213] text-[#FDFDFD] rounded-lg focus:outline-none focus:ring-3 focus:ring-[#1A3E4A] text-lg"
           required
         />
+        <p class="error" v-if="errors.password && errors.password[0]">{{ errors.password[0] }}</p>
       </div>
       <button
         type="submit"

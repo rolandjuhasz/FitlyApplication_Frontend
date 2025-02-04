@@ -3,6 +3,7 @@ import HomeView from '../views/HeroView.vue'
 import LoginView from '@/views/Auth/LoginView.vue'
 import RegisterView from '@/views/Auth/RegisterView.vue'
 import { useAuthStore } from '@/stores/auth'
+import SocialMediaView from '@/views/Posts/SocialMediaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,11 @@ const router = createRouter({
       name: 'register',
       component: RegisterView,
       meta: { guest: true },
+    },
+    {
+      path: '/social',
+      name: 'social',
+      component: SocialMediaView,
     },
 
   ],
