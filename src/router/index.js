@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/auth'
 import SocialMediaView from '@/views/Posts/SocialMediaView.vue'
 import UpdateView from '@/views/Posts/UpdateView.vue'
 import ProfileView from '@/views/Profile/ProfileView.vue'
+import CreatePostView from '@/views/Posts/CreatePostView.vue'
 // import ShowView from '@/views/Posts/ShowView.vue'
 
 const router = createRouter({
@@ -38,6 +39,12 @@ const router = createRouter({
       path: '/posts',
       name: 'posts',
       component: SocialMediaView,
+    },
+    {
+      path: "/create",
+      name: "create",
+      component: CreatePostView,
+      meta: { auth: true },
     },
     // {
     //   path: "/posts/:id",

@@ -16,9 +16,15 @@ onMounted(async () => {
 
 <template>
   <main class="container mx-auto p-6 max-w-6xl">
-    <h1 class="text-4xl font-bold text-center text-[#131213] mb-8">Latest Posts</h1>
-
     <div v-if="posts.length > 0" class="space-y-8">
+    <h1 class="text-4xl font-bold text-center text-[#eae3ea] mb-8">Latest Posts</h1>
+<div class="text-center mt-4">
+  <RouterLink :to="{ name: 'create' }" class="auth-btn">
+    New Post
+  </RouterLink>
+</div>
+
+
       <div
         v-for="post in posts"
         :key="post.id"
@@ -100,4 +106,21 @@ onMounted(async () => {
 textarea {
   resize: none;
 }
+
+.auth-btn {
+      background-color: #6ABC5C;
+      color: #131213;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+      margin: 15px;
+    }
+    
+    .auth-btn:hover {
+      background-color: #5aa34d;
+      transform: scale(1.05);
+    }
 </style>
+
+

@@ -25,6 +25,7 @@ export const usePostsStore = defineStore("postsStore", {
     },
     /******************* Create a post *******************/
     async createPost(formData) {
+      const toast = useToast();
       const res = await fetch("/api/posts", {
         method: "post",
         headers: {
@@ -32,13 +33,16 @@ export const usePostsStore = defineStore("postsStore", {
         },
         body: JSON.stringify(formData),
       });
-
+      
       const data = await res.json();
-
+      if(res.ok) {
+        toast.success("A poszt sikeresen létrehozva!", {timeout: 2000})
+      }
+      
       if (data.errors) {
         this.errors = data.errors;
       } else {
-        this.router.push({ name: "home" });
+        this.router.push({ name: "posts" });
         this.errors = {}
       }
     },
@@ -56,7 +60,7 @@ export const usePostsStore = defineStore("postsStore", {
 
         const data = await res.json();
         if (res.ok) {
-          toast.error("A poszt törölve!")
+          toast.error("A poszt törölve!", {timeout: 2000})
           this.router.push({ name: "home" });
         }
         console.log(data);
@@ -79,7 +83,7 @@ export const usePostsStore = defineStore("postsStore", {
         if (data.errors) {
           this.errors = data.errors;
         } else {
-          toast.success("Sikeres módosítás!")
+          toast.success("Sikeres módosítás!", {timeout: 2000})
           this.router.push({ name: "posts" });
           this.errors = {}
         }
