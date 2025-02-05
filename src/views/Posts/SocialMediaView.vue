@@ -2,7 +2,10 @@
 import { usePostsStore } from "@/stores/post";
 import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
+
+const authStore = useAuthStore()
 const { getAllPosts } = usePostsStore();
 const posts = ref([]);
 
@@ -12,23 +15,24 @@ onMounted(async () => {
 </script>
 
 <template>
-    <main class="container mx-auto p-6">
+    <main class="container mx-auto p-6 max-w-6xl">
       <h1 class="text-4xl font-bold text-center text-[#131213] mb-8">Latest Posts</h1>
   
       <div v-if="posts.length > 0" class="space-y-8">
         <div
           v-for="post in posts"
           :key="post.id"
-          class="border-l-4 border-[#6ABC5C] pl-4 p-6 rounded-lg shadow-lg bg-[#FDFDFD] hover:shadow-xl transition-shadow duration-300">
-          <h2 class="text-2xl font-bold text-[#131213] mb-2">
+          class="border-l-4 border-[#6ABC5C] pl-4 p-3 rounded-lg shadow-lg bg-[#FDFDFD] hover:shadow-xl transition-shadow duration-300">
+          <h2 class="text-3xl font-bold text-[#131213] mb-2">
             {{ post.title }}
           </h2>
-          <p class="text-sm text-[#C7C8C7] mb-4">
-            Posted by  
-            <span class="text-[#6ABC5C] font-bold">
-              {{post.user }}
-            </span>
-          </p>
+          <p class="text-mx text-[#C7C8C7] mb-4 text-right">
+  Posted by  
+  <span class="text-green-800 font-bold">
+    {{ post.user.name }}
+  </span>
+</p>
+
           <p class="text-[#131213] mb-4">
             {{ post.content }}
           </p>
@@ -37,6 +41,24 @@ onMounted(async () => {
             class="text-[#6ABC5C] font-bold underline hover:text-[#4A8F4A] transition-colors duration-300">
             Read more...
           </RouterLink> -->
+          <div
+          v-if="authStore.user && authStore.user.id === post.user_id"
+          class="flex items-center gap-6 mt-6">
+          <form @submit.prevent="deletePost(post)">
+            <button
+              class="text-red-500 font-bold px-2 py-1 border border-red-300"
+            >
+              Delete
+            </button>
+          </form>
+
+            <RouterLink
+              :to="{ name: 'update', params: { id: post.id } }"
+              class="text-green-500 font-bold px-2 py-1 border border-green-300"
+              >Update</RouterLink
+            >
+        </div>
+          
         </div>
       </div>
       <div v-else class="text-center">
@@ -44,3 +66,6 @@ onMounted(async () => {
       </div>
     </main>
 </template>
+
+<style scoped>
+</style>

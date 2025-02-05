@@ -4,6 +4,9 @@ import LoginView from '@/views/Auth/LoginView.vue'
 import RegisterView from '@/views/Auth/RegisterView.vue'
 import { useAuthStore } from '@/stores/auth'
 import SocialMediaView from '@/views/Posts/SocialMediaView.vue'
+import UpdateView from '@/views/Posts/UpdateView.vue'
+import ProfileView from '@/views/Profile/ProfileView.vue'
+// import ShowView from '@/views/Posts/ShowView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,9 +29,26 @@ const router = createRouter({
       meta: { guest: true },
     },
     {
-      path: '/social',
-      name: 'social',
+      path: "/profile",
+      name: "profile",
+      component: ProfileView,
+      meta: { auth: true },
+    },
+    {
+      path: '/posts',
+      name: 'posts',
       component: SocialMediaView,
+    },
+    // {
+    //   path: "/posts/:id",
+    //   name: "show",
+    //   component: ShowView,
+    // },
+    {
+      path: "/posts/update/:id",
+      name: "update",
+      component: UpdateView,
+      meta: { auth: true },
     },
 
   ],
