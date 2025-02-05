@@ -18,22 +18,23 @@ const toggleMenu = () => {
       <img src="@/assets/images/logo.jpg" alt="Logo" class="h-12 w-12 rounded-full" />
       <h1 class="text-2xl font-bold text-[#6ABC5C]">Fitly</h1>
     </div>
-
+    
     <ul class="hidden md:flex space-x-6 text-lg">
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link">Home</RouterLink></li>
+      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Home</RouterLink></li>
       <li><RouterLink :to="{ name: 'home' }" class="nav-link">Workouts</RouterLink></li>
       <li><RouterLink :to="{ name: 'home' }" class="nav-link">Nutrition</RouterLink></li>
-      <li><RouterLink :to="{ name: 'social' }" class="nav-link">Social media</RouterLink></li>
+      <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Social media</RouterLink></li>
+      <li v-if="authStore.user"><RouterLink :to="{ name: 'profile' }" class="nav-link" active-class="active">Profile</RouterLink></li>
     </ul>
-
+    <form @submit.prevent="authStore.logout" v-if="authStore.user">
+      <button class="auth-btn">Logout</button>
+    </form>
+    
     <div class="hidden md:flex space-x-4" v-if="!authStore.user">
       <RouterLink :to="{name: 'register'}" class="auth-btn">Register</RouterLink>
       <RouterLink :to="{name: 'login'}" class="auth-btn bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Login</RouterLink>
     </div>
-
-    <form @submit.prevent="authStore.logout" v-if="authStore.user">
-          <button class="auth-btn">Logout</button>
-        </form>
+    
 
     <button @click="toggleMenu" class="md:hidden text-3xl text-white">
       ☰
@@ -42,10 +43,10 @@ const toggleMenu = () => {
 
   <div v-if="isMenuOpen" class="md:hidden bg-[#131213] p-4">
     <ul class="flex flex-col space-y-4 text-lg text-center">
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link">Home</RouterLink></li>
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link">Workouts</RouterLink></li>
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link">Nutrition</RouterLink></li>
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link">Contact</RouterLink></li>
+      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Home</RouterLink></li>
+      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Workouts</RouterLink></li>
+      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Nutrition</RouterLink></li>
+      <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Social media</RouterLink></li>
       <li><RouterLink :to="{name: 'register'}" class="auth-btn block">Register</RouterLink></li>
       <li><RouterLink :to="{name: 'login'}" class="auth-btn block bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Login</RouterLink></li>
     </ul>
@@ -94,4 +95,33 @@ const toggleMenu = () => {
       background-color: #5aa34d;
       transform: scale(1.05);
     }
+
+    .nav-link {
+  position: relative;
+  color: #fdfdfd;
+  transition: color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active { /* Aktív elem kiemelése */
+  color: #6ABC5C;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: #6ABC5C;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after { /* Az aktív elem aláhúzása */
+  width: 100%;
+  left: 0;
+}
+
     </style>

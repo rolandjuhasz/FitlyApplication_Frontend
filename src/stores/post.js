@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
+import { useToast } from "vue-toastification";
 
 export const usePostsStore = defineStore("postsStore", {
   state: () => {
@@ -20,7 +21,7 @@ export const usePostsStore = defineStore("postsStore", {
       const res = await fetch(`/api/posts/${post}`);
       const data = await res.json();
 
-      return data.post;
+      return data.post ?? data;
     },
     /******************* Create a post *******************/
     async createPost(formData) {
@@ -44,7 +45,7 @@ export const usePostsStore = defineStore("postsStore", {
     /******************* Delete a post *******************/
     async deletePost(post) {
       const authStore = useAuthStore();
-      if (authStore.user.id === post.user_id || authStore.user.admin === "Admin") {
+      if (authStore.user.id === post.user_id) {
         const res = await fetch(`/api/posts/${post.id}`, {
           method: "delete",
           headers: {
@@ -62,7 +63,8 @@ export const usePostsStore = defineStore("postsStore", {
     /******************* Update a post *******************/
     async updatePost(post, formData) {
       const authStore = useAuthStore();
-      if (authStore.user.id === post.user_id || authStore.user.admin === 'Admin') {
+      const toast = useToast()
+      if (authStore.user.id === post.user_id) {
         const res = await fetch(`/api/posts/${post.id}`, {
           method: "PUT",
           headers: {
@@ -75,7 +77,8 @@ export const usePostsStore = defineStore("postsStore", {
         if (data.errors) {
           this.errors = data.errors;
         } else {
-          this.router.push({ name: "home" });
+          toast.success("Sikeres módosítás!")
+          this.router.push({ name: "posts" });
           this.errors = {}
         }
       }
