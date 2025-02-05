@@ -45,6 +45,7 @@ export const usePostsStore = defineStore("postsStore", {
     /******************* Delete a post *******************/
     async deletePost(post) {
       const authStore = useAuthStore();
+      const toast = useToast()
       if (authStore.user.id === post.user_id) {
         const res = await fetch(`/api/posts/${post.id}`, {
           method: "delete",
@@ -55,6 +56,7 @@ export const usePostsStore = defineStore("postsStore", {
 
         const data = await res.json();
         if (res.ok) {
+          toast.error("A poszt törölve!")
           this.router.push({ name: "home" });
         }
         console.log(data);
