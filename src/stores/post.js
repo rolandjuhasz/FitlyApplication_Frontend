@@ -6,13 +6,22 @@ export const usePostsStore = defineStore("postsStore", {
   state: () => {
     return {
       errors: {},
+      posts: []
     };
+  },
+  getters: {
+    userPostsCount: (state) => {
+      const authStore = useAuthStore();
+      if (!state.posts || state.posts.length === 0) return 0; // Ha nincs adat, 0-t adunk vissza
+      return state.posts.filter((post) => post.user_id === authStore.user?.id).length;
+    },
   },
   actions: {
     /******************* Get all posts *******************/
     async getAllPosts() {
       const res = await fetch("/api/posts");
       const data = await res.json();
+      this.posts = data;
 
       return data;
     },
