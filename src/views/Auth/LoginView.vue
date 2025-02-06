@@ -19,7 +19,7 @@ onMounted(() => (errors.value = {}));
   <div class="min-h-screen bg-[#131213] text-[#FDFDFD] flex flex-col items-center justify-center p-6">
 
   <Motion :initial="{ opacity: 0, y: -50 }" :animate="{ opacity: 1, y: 0 }" :transition="{ duration: 1 }">
-    <img src="@/assets/images/logo.jpg" alt="Logo" class="w-40 h-40 mb-5 rounded-full shadow-lg" />
+    <img src="@/assets/images/logo.png" alt="Logo" class="w-40 h-40 mb-5 rounded-full shadow-lg" />
   </Motion>
 
 
@@ -31,9 +31,8 @@ onMounted(() => (errors.value = {}));
   <div 
     class="relative bg-[#002128] p-16 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden"
   >
-    <!-- Háttérkép -->
     <img 
-      src="@/assets/images/festmeny.png" 
+      src="@/assets/images/animated.png" 
       alt="Animated Background" 
       class="absolute inset-0 w-full h-full object-cover opacity-20"
     />

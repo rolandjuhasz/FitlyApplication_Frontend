@@ -8,7 +8,6 @@ const authStore = useAuthStore();
 const { getAllPosts, deletePost } = usePostsStore();
 const posts = ref([]);
 
-// Szerverről történő betöltés (például kommentek is)
 onMounted(async () => {
   posts.value = await getAllPosts();
 });
@@ -17,10 +16,10 @@ onMounted(async () => {
 <template>
   <main class="container mx-auto p-6 max-w-6xl">
     <div v-if="posts.length > 0" class="space-y-8">
-    <h1 class="text-4xl font-bold text-center text-[#eae3ea] mb-8">Latest Posts</h1>
+    <h1 class="text-4xl font-bold text-center text-[#eae3ea] mb-8">Legutóbbi posztok</h1>
 <div class="text-center mt-4">
   <RouterLink :to="{ name: 'create' }" class="auth-btn">
-    New Post
+    Új poszt
   </RouterLink>
 </div>
 
@@ -102,7 +101,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* Style for the comment section and heart button */
 textarea {
   resize: none;
 }

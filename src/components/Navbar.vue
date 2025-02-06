@@ -15,24 +15,23 @@ const toggleMenu = () => {
 <nav class="fixed top-0 left-0 w-full bg-[#131213] z-50 shadow-lg">
   <div class="container mx-auto flex justify-between items-center p-4">
     <div class="flex items-center space-x-4">
-      <img src="@/assets/images/logo.jpg" alt="Logo" class="h-12 w-12 rounded-full" />
+      <img src="@/assets/images/logo.png" alt="Logo" class="h-12 w-12 rounded-full" />
       <h1 class="text-2xl font-bold text-[#6ABC5C]">Fitly</h1>
     </div>
     
     <ul class="hidden md:flex space-x-6 text-lg">
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Home</RouterLink></li>
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link">Workouts</RouterLink></li>
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link">Nutrition</RouterLink></li>
-      <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Social media</RouterLink></li>
-      <li v-if="authStore.user"><RouterLink :to="{ name: 'profile' }" class="nav-link" active-class="active">Profile</RouterLink></li>
+      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Kezdőlap</RouterLink></li>
+      <li><RouterLink :to="{ name: 'workout' }" class="nav-link" active-class="active">Változtass!</RouterLink></li>
+      <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Közösség</RouterLink></li>
+      <li v-if="authStore.user"><RouterLink :to="{ name: 'profile' }" class="nav-link" active-class="active">Profil</RouterLink></li>
     </ul>
     <form @submit.prevent="authStore.logout" v-if="authStore.user">
-      <button class="auth-btn">Logout</button>
+      <button class="auth-btn">Kijelentkezés</button>
     </form>
     
     <div class="hidden md:flex space-x-4" v-if="!authStore.user">
-      <RouterLink :to="{name: 'register'}" class="auth-btn">Register</RouterLink>
-      <RouterLink :to="{name: 'login'}" class="auth-btn bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Login</RouterLink>
+      <RouterLink :to="{name: 'register'}" class="auth-btn">Regisztráció</RouterLink>
+      <RouterLink :to="{name: 'login'}" class="auth-btn bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Bejelentkezés</RouterLink>
     </div>
     
 
@@ -43,12 +42,11 @@ const toggleMenu = () => {
 
   <div v-if="isMenuOpen" class="md:hidden bg-[#131213] p-4">
     <ul class="flex flex-col space-y-4 text-lg text-center">
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Home</RouterLink></li>
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Workouts</RouterLink></li>
-      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Nutrition</RouterLink></li>
+      <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Kezdőlap</RouterLink></li>
+      <li><RouterLink :to="{ name: 'workout' }" class="nav-link" active-class="active">Workouts</RouterLink></li>
       <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Social media</RouterLink></li>
-      <li><RouterLink :to="{name: 'register'}" class="auth-btn block">Register</RouterLink></li>
-      <li><RouterLink :to="{name: 'login'}" class="auth-btn block bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Login</RouterLink></li>
+      <li><RouterLink :to="{name: 'register'}" class="auth-btn block">Regisztráció</RouterLink></li>
+      <li><RouterLink :to="{name: 'login'}" class="auth-btn block bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Bejelentkezés</RouterLink></li>
     </ul>
   </div>
 </nav>

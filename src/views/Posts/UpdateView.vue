@@ -41,7 +41,6 @@ onMounted(async () => {
         @submit.prevent="updatePost(post, formData)"
         class="space-y-6"
       >
-        <!-- Title Input -->
         <div>
           <label for="title" class="block text-lg font-semibold text-[#131213] mb-2">Post Title</label>
           <input
@@ -54,7 +53,6 @@ onMounted(async () => {
           <p v-if="errors.title" class="text-red-500 text-sm mt-2">{{ errors.title[0] }}</p>
         </div>
 
-        <!-- Content Textarea -->
         <div>
           <label for="content" class="block text-lg font-semibold text-[#131213] mb-2">Post Content</label>
           <textarea
@@ -67,7 +65,6 @@ onMounted(async () => {
           <p v-if="errors.content" class="text-red-500 text-sm mt-2">{{ errors.content[0] }}</p>
         </div>
 
-        <!-- Submit Button -->
         <div class="text-center">
           <button
             type="submit"
@@ -82,10 +79,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* Background style for the entire page */
 
-
-/* Error message styling */
 .text-red-500 {
   color: #ef4444;
 }

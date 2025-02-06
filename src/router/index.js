@@ -7,6 +7,7 @@ import SocialMediaView from '@/views/Posts/SocialMediaView.vue'
 import UpdateView from '@/views/Posts/UpdateView.vue'
 import ProfileView from '@/views/Profile/ProfileView.vue'
 import CreatePostView from '@/views/Posts/CreatePostView.vue'
+import WorkoutView from '@/views/Workout/WorkoutView.vue'
 // import ShowView from '@/views/Posts/ShowView.vue'
 
 const router = createRouter({
@@ -36,6 +37,11 @@ const router = createRouter({
       meta: { auth: true },
     },
     {
+      path: "/workout",
+      name: "workout",
+      component: WorkoutView,
+    },
+    {
       path: '/posts',
       name: 'posts',
       component: SocialMediaView,
@@ -46,11 +52,6 @@ const router = createRouter({
       component: CreatePostView,
       meta: { auth: true },
     },
-    // {
-    //   path: "/posts/:id",
-    //   name: "show",
-    //   component: ShowView,
-    // },
     {
       path: "/posts/update/:id",
       name: "update",
