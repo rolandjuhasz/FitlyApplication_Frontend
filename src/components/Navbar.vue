@@ -25,9 +25,9 @@ const toggleMenu = () => {
       <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Közösség</RouterLink></li>
       <li v-if="authStore.user"><RouterLink :to="{ name: 'profile' }" class="nav-link" active-class="active">Profil</RouterLink></li>
     </ul>
-    <form @submit.prevent="authStore.logout" v-if="authStore.user">
-      <button class="auth-btn">Kijelentkezés</button>
-    </form>
+      <RouterLink v-if="authStore.user" :to="{ name: 'home' }" @click="authStore.logout" class="auth-btn hidden md:flex space-x-6 text-lg">
+  Kijelentkezés
+</RouterLink>
     
     <div class="hidden md:flex space-x-4" v-if="!authStore.user">
       <RouterLink :to="{name: 'register'}" class="auth-btn">Regisztráció</RouterLink>
@@ -45,8 +45,12 @@ const toggleMenu = () => {
       <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Kezdőlap</RouterLink></li>
       <li><RouterLink :to="{ name: 'workout' }" class="nav-link" active-class="active">Workouts</RouterLink></li>
       <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Social media</RouterLink></li>
-      <li><RouterLink :to="{name: 'register'}" class="auth-btn block">Regisztráció</RouterLink></li>
-      <li><RouterLink :to="{name: 'login'}" class="auth-btn block bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Bejelentkezés</RouterLink></li>
+      <li v-if="authStore.user"><RouterLink :to="{ name: 'profile' }" class="nav-link" active-class="active">Profil</RouterLink></li>
+      <li v-if="!authStore.user"><RouterLink :to="{name: 'register'}" class="auth-btn block">Regisztráció</RouterLink></li>
+      <li v-if="!authStore.user"><RouterLink :to="{name: 'login'}" class="auth-btn block bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Bejelentkezés</RouterLink></li>
+      <RouterLink v-if="authStore.user" :to="{ name: 'home' }" @click="authStore.logout" class="auth-btn">
+  Kijelentkezés
+</RouterLink>
     </ul>
   </div>
 </nav>

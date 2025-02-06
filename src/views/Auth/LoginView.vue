@@ -16,7 +16,7 @@ onMounted(() => (errors.value = {}));
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#131213] text-[#FDFDFD] flex flex-col items-center justify-center p-6">
+  <div class="min-h-screen bg-[#131213] text-[#FDFDFD] flex flex-col items-center justify-center p-6 overflow-hidden">
 
   <Motion :initial="{ opacity: 0, y: -50 }" :animate="{ opacity: 1, y: 0 }" :transition="{ duration: 1 }">
     <img src="@/assets/images/logo.png" alt="Logo" class="w-40 h-40 mb-5 rounded-full shadow-lg" />
@@ -34,7 +34,7 @@ onMounted(() => (errors.value = {}));
     <img 
       src="@/assets/images/animated.png" 
       alt="Animated Background" 
-      class="absolute inset-0 w-full h-full object-cover opacity-20"
+      class="absolute inset-0 w-full h-full object-cover opacity-10"
     />
 
     <h2 class="text-5xl font-bold text-[#FDFDFD] mb-10 text-center relative z-10">Bejelentkezés</h2>
