@@ -23,7 +23,7 @@ const toggleMenu = () => {
       <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Kezdőlap</RouterLink></li>
       <li><RouterLink :to="{ name: 'workout' }" class="nav-link" active-class="active">Változtass!</RouterLink></li>
       <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Közösség</RouterLink></li>
-      <li v-if="authStore.user"><RouterLink :to="{ name: 'profile' }" class="nav-link" active-class="active">Profil</RouterLink></li>
+      <li v-if="authStore.user"><RouterLink :to="{ name: 'profile' }" class="nav-link" active-class="active">{{authStore.user.name}}</RouterLink></li>
     </ul>
       <RouterLink v-if="authStore.user" :to="{ name: 'home' }" @click="authStore.logout" class="auth-btn hidden md:flex space-x-6 text-lg">
   Kijelentkezés
