@@ -20,13 +20,26 @@ const loadComments = async (post) => {
   post.comments = useCommentsStore().comments.filter(comment => comment.post_id === post.id).slice(start, end);
 };
 
+const createComment = async (postId, content) => {
+  if (!content.trim()) return; // Ne küldjön üres kommentet
+  await useCommentsStore().createComment(postId, content);
+  const post = posts.value.find(p => p.id === postId);
+  if (post) {
+    post.newComment = ""; // Mező törlése a küldés után
+    await loadComments(post); // Frissítsük a hozzászólásokat
+  }
+};
+
+
 onMounted(async () => {
   posts.value = await getAllPosts();
   for (let post of posts.value) {
     post.currentPage = 1;
+    post.newComment = "";
     await loadComments(post);
   }
 });
+
 
 const nextPage = (post) => {
   post.currentPage++;
@@ -39,6 +52,19 @@ const prevPage = (post) => {
     loadComments(post);
   }
 };
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("hu-HU", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).replace(/\./g, "-").replace(" ", "");
+};
+
 </script>
 
 <template>
@@ -68,19 +94,52 @@ const prevPage = (post) => {
         </div>
 
         <div class="mb-6">
-          <h3 class="text-lg font-bold text-[#131213] mb-2">Comments</h3>
-          <div v-if="post.comments && post.comments.length > 0">
-            <div v-for="comment in post.comments" :key="comment.id" class="border-l-4 border-[#D1D1D1] pl-4 p-3 mb-4 rounded-lg">
-              <p class="text-[#131213]"><span class="font-bold">{{comment.user.name}}</span> {{ comment.content }}</p>
-            </div>
-          </div>
-          <div v-else class="text-[#C7C8C7]">No comments yet.</div>
+    <h3 class="text-lg font-bold text-[#131213] mb-4">Comments</h3>
+    
 
-          <form>
-            <textarea v-model="post.newComment" placeholder="Add a comment..." class="w-full p-2 border border-gray-300 rounded-lg mb-4" rows="3"></textarea>
-            <button type="submit" class="text-blue-500 font-bold">Post Comment</button>
-          </form>
+    <div v-if="post.comments && post.comments.length > 0" class="space-y-4">
+        <div v-for="comment in post.comments" :key="comment.id" class="flex items-start space-x-3">
+
+            <img :src="comment.user.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
+            
+
+            <div class="flex-1 bg-[#F0F2F5] p-3 rounded-lg">
+                <p class="text-[#131213] font-semibold">{{ comment.user.name }}</p>
+                <p class="text-[#131213]">{{ comment.content }}</p>
+                <div class="mt-2 text-sm text-[#65676B]">
+                    <span class="cursor-pointer hover:underline">Like</span>
+                    <span class="mx-2">·</span>
+                    <span class="cursor-pointer hover:underline">Reply</span>
+                    <span class="mx-2">·</span>
+                    <span class="text-[#65676B]">{{ formatDate(comment.created_at) }}</span>
+                </div>
+            </div>
         </div>
+    </div>
+    
+    <div v-else class="text-[#C7C8C7]">No comments yet.</div>
+
+
+    <form class="mt-6" @submit.prevent="createComment(post.id, post.newComment)">
+    <div class="flex items-start space-x-3">
+        <textarea 
+            v-model="post.newComment" 
+            placeholder="Write a comment..." 
+            class="flex-1 p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows="2"
+        ></textarea>
+    </div>
+    
+    <div class="mt-2 flex justify-end">
+        <button 
+            type="submit" 
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Post Comment
+        </button>
+    </div>
+</form>
+
+</div>
 
         <div v-if="authStore.user && authStore.user.id === post.user_id" class="flex items-center gap-6 mt-6">
           <form @submit.prevent="deletePost(post)">
@@ -98,10 +157,14 @@ const prevPage = (post) => {
 
     <div v-else class="text-center">
       <h2 class="text-2xl text-[#C7C8C7]">There are no posts</h2>
+      <div class="mt-5">
+        <RouterLink :to="{ name: 'create' }" class="auth-btn">
+          Új poszt
+        </RouterLink>
+      </div>
     </div>
   </main>
 </template>
-
 
 
 <style scoped>

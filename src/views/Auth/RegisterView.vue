@@ -12,6 +12,7 @@ const formData = reactive({
   email: "",
   password: "",
   password_confirmation: "",
+  gender: ""
 });
 
 onMounted(() => (errors.value = {}));
@@ -63,6 +64,18 @@ onMounted(() => (errors.value = {}));
               <input v-model="formData.password_confirmation" type="password" placeholder="Jelszó megerősítése"
                 class="w-full px-4 py-3 bg-[#131213] text-white rounded-lg focus:ring-3 focus:ring-[#1A3E4A] text-lg" required />
             </div>
+
+            <div class="col-span-2">
+  <label class="block text-[#ffffff] text-lg">Nem</label>
+  <select v-model="formData.gender" class="w-full px-4 py-3 bg-[#131213] text-white rounded-lg focus:ring-3 focus:ring-[#1A3E4A] text-lg" required>
+    <option value="" disabled>Válassz nemet</option>
+    <option value="male">Férfi</option>
+    <option value="female">Nő</option>
+    <option value="other">Egyéb</option>
+  </select>
+  <p class="text-red-500 text-sm mt-1" v-if="errors.gender">{{ errors.gender[0] }}</p>
+</div>
+
 
           </div>
 
