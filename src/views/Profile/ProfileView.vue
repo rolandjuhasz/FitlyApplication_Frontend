@@ -15,7 +15,8 @@ const user = reactive({
   recommended_calories: '',
   lose_or_gain: '',
   goal_weight: '',
-  created_at: ''
+  created_at: '',
+  birth_date: ''
 });
 
 const authStore = useAuthStore();
@@ -27,11 +28,17 @@ const editableUser = ref({ ...authStore.user });
 const editMode = ref(false);
 
 const saveChanges = async () => {
+  // Számoljuk ki a kort, ha a születési dátum változott
+  if (editableUser.value.birth_date) {
+    editableUser.value.age = calculateAge(editableUser.value.birth_date);
+  }
+
   await profileSotre.updateProfile(editableUser.value);
-  authStore.user = { ...editableUser.value };
-  editableUser.value = { ...authStore.user };
+  authStore.user = { ...editableUser.value }; // User frissítése
+  editableUser.value = { ...authStore.user }; // EditableUser szinkronizálása
   editMode.value = false;
 };
+
 
 const cancelEdit = () => {
   editableUser.value = { ...authStore.user };
@@ -53,6 +60,18 @@ const tabs = [
   { label: "Kalória adatok", value: "calories" },
   { label: "Test adatok", value: "bodyStats" }
 ];
+
+const calculateAge = (birthday) => {
+  const birthDate = new Date(birthday); // Átalakítjuk dátummá
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth();
+    if (month < birthDate.getMonth() || (month === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
+      age--; // Ha még nem volt idén a születésnap
+    }
+    return age;
+};
+
 </script>
 
 <template>
@@ -105,7 +124,6 @@ const tabs = [
             </button>
 
             <div v-if="editMode">
-              <h2>Kor: <input v-model="editableUser.age" type="number" class="input-class" /></h2>
               <h2>Magasság: <input v-model="editableUser.height" type="number" class="input-class" /> cm</h2>
               <h2>Súly: <input v-model="editableUser.weight" type="number" class="input-class" /></h2>
               <h2>Ajánlott kalória: <input v-model="editableUser.recommended_calories" type="number" class="input-class" /></h2>
@@ -128,7 +146,7 @@ const tabs = [
             </div>
 
             <div v-else>
-              <h2>Kor: <span class="font-bold">{{ authStore.user.age }}</span></h2>
+              <h2>Kor: <span class="font-bold">{{ calculateAge(authStore.user.birthday) }}</span></h2>
               <h2>Magasság: <span class="font-bold">{{ authStore.user.height }} cm</span></h2>
               <h2>Súly: <span class="font-bold">{{ authStore.user.weight }}</span></h2>
               <h2>Ajánlott kalória: <span class="font-bold">{{ authStore.user.recommended_calories }}</span></h2>

@@ -12,8 +12,10 @@ const formData = reactive({
   email: "",
   password: "",
   password_confirmation: "",
-  gender: ""
+  gender: "",
+  birthday: ""
 });
+
 
 onMounted(() => (errors.value = {}));
 </script>
@@ -64,6 +66,14 @@ onMounted(() => (errors.value = {}));
               <input v-model="formData.password_confirmation" type="password" placeholder="Jelszó megerősítése"
                 class="w-full px-4 py-3 bg-[#131213] text-white rounded-lg focus:ring-3 focus:ring-[#1A3E4A] text-lg" required />
             </div>
+
+            <div class="col-span-2">
+            <label class="block text-[#ffffff] text-lg">Születési dátum</label>
+            <input v-model="formData.birthday" type="date" placeholder="Születési dátum"
+              class="w-full px-4 py-3 bg-[#131213] text-white rounded-lg focus:ring-3 focus:ring-[#1A3E4A] text-lg" required />
+            <p class="text-red-500 text-sm mt-1" v-if="errors.birthday">{{ errors.birthday[0] }}</p>
+          </div>
+
 
             <div class="col-span-2">
   <label class="block text-[#ffffff] text-lg">Nem</label>

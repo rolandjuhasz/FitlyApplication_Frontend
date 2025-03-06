@@ -6,7 +6,7 @@ export const useProfileStore = defineStore("profileStore", {
     errors: {},
   }),
   actions: {
-    /******************* Lekéri a bejelentkezett felhasználó profilját *******************/
+    /******************* Get suer datas *******************/
     async fetchProfile() {
       if (localStorage.getItem("token")) {
         const res = await fetch("/api/user", {
@@ -22,9 +22,9 @@ export const useProfileStore = defineStore("profileStore", {
       }
     },
 
-    /******************* Profil frissítése *******************/
+    /******************* Profile update *******************/
     async updateProfile(updatedData) {
-      const res = await fetch("/api/user/profile", {
+      const res = await fetch("/api/users/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +36,7 @@ export const useProfileStore = defineStore("profileStore", {
       const data = await res.json();
 
       if (res.ok) {
-        this.profile = data; // Frissítjük a store-ban a profilt
+        this.profile = data;
       } else {
         this.errors = data.errors;
       }

@@ -4,10 +4,12 @@ import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useCommentsStore } from "@/stores/comment";
+import { useReactionStore } from "@/stores/reaction";
 
 const authStore = useAuthStore();
 const { getAllPosts } = usePostsStore();
 const { getComments } = useCommentsStore();
+const reactionStore = useReactionStore();
 
 const posts = ref([]);
 const commentsPerPage = 3;
@@ -21,15 +23,14 @@ const loadComments = async (post) => {
 };
 
 const createComment = async (postId, content) => {
-  if (!content.trim()) return; // Ne küldjön üres kommentet
+  if (!content.trim()) return;
   await useCommentsStore().createComment(postId, content);
   const post = posts.value.find(p => p.id === postId);
   if (post) {
-    post.newComment = ""; // Mező törlése a küldés után
-    await loadComments(post); // Frissítsük a hozzászólásokat
+    post.newComment = "";
+    await loadComments(post);
   }
 };
-
 
 onMounted(async () => {
   posts.value = await getAllPosts();
@@ -39,7 +40,6 @@ onMounted(async () => {
     await loadComments(post);
   }
 });
-
 
 const nextPage = (post) => {
   post.currentPage++;
@@ -85,12 +85,14 @@ const formatDate = (dateString) => {
 
         <p class="text-[#131213] mb-4">{{ post.content }}</p>
 
+        <div v-if="post.image_url" class="mb-4">
+          <img :src="post.image_url" :alt="post.title" class="w-full h-auto rounded-lg" />
+        </div>
+
         <div class="flex items-center gap-2 mb-4">
-          <button class="text-red-500 hover:text-red-700 transition-colors duration-200" @click="post.liked = !post.liked">
-            <span v-if="post.liked">❤️</span>
-            <span v-else>🤍</span>
-          </button>
-          <span>{{ post.liked ? post.likes + 1 : post.likes }} likes</span>
+          <button @click="reactionStore.toggleReaction(post, 'like')">👍</button>
+          <button @click="reactionStore.toggleReaction(post, 'dislike')">👎</button>
+          <button @click="reactionStore.toggleReaction(post, 'love')">❤️</button>
         </div>
 
         <div class="mb-6">
@@ -99,10 +101,7 @@ const formatDate = (dateString) => {
 
     <div v-if="post.comments && post.comments.length > 0" class="space-y-4">
         <div v-for="comment in post.comments" :key="comment.id" class="flex items-start space-x-3">
-
             <img :src="comment.user.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
-            
-
             <div class="flex-1 bg-[#F0F2F5] p-3 rounded-lg">
                 <p class="text-[#131213] font-semibold">{{ comment.user.name }}</p>
                 <p class="text-[#131213]">{{ comment.content }}</p>
@@ -118,8 +117,6 @@ const formatDate = (dateString) => {
     </div>
     
     <div v-else class="text-[#C7C8C7]">No comments yet.</div>
-
-
     <form class="mt-6" @submit.prevent="createComment(post.id, post.newComment)">
     <div class="flex items-start space-x-3">
         <textarea 
@@ -130,17 +127,15 @@ const formatDate = (dateString) => {
         ></textarea>
     </div>
     
-    <div class="mt-2 flex justify-end">
-        <button 
-            type="submit" 
-            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            Post Comment
-        </button>
-    </div>
+      <div class="mt-2 flex justify-end">
+          <button 
+              type="submit" 
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              Post Comment
+          </button>
+      </div>
 </form>
-
 </div>
-
         <div v-if="authStore.user && authStore.user.id === post.user_id" class="flex items-center gap-6 mt-6">
           <form @submit.prevent="deletePost(post)">
             <button class="text-red-500 font-bold px-2 py-1 border border-red-300">Delete</button>
@@ -165,7 +160,6 @@ const formatDate = (dateString) => {
     </div>
   </main>
 </template>
-
 
 <style scoped>
 textarea {
