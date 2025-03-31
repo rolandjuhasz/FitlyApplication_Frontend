@@ -90,11 +90,24 @@ const formatDate = (dateString) => {
           <img :src="post.image_url" :alt="post.title" class="w-full h-auto rounded-lg" />
         </div>
 
-        <div class="flex items-center gap-2 mb-4">
-          <button @click="reactionStore.toggleReaction(post, 'like')">👍</button>
-          <button @click="reactionStore.toggleReaction(post, 'dislike')">👎</button>
-          <button @click="reactionStore.toggleReaction(post, 'love')">❤️</button>
-        </div>
+        <div class="flex items-center gap-3 mb-4">
+  <button 
+    @click="reactionStore.toggleReaction(post, 'like')" 
+    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-blue-200 transition">
+    👍
+  </button>
+  <button 
+    @click="reactionStore.toggleReaction(post, 'dislike')" 
+    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-red-200 transition">
+    👎
+  </button>
+  <button 
+    @click="reactionStore.toggleReaction(post, 'love')" 
+    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-pink-200 transition">
+    ❤️
+  </button>
+</div>
+
 
         <div class="mb-6">
     <h3 class="text-lg font-bold text-[#131213] mb-4">Comments</h3>
