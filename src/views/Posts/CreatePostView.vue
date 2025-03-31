@@ -9,7 +9,12 @@ const { createPost } = usePostsStore();
 const formData = reactive({
   title: "",
   content: "",
+  image: null, // Hozzáadjuk a képet
 });
+
+const handleFileChange = (event) => {
+  formData.image = event.target.files[0]; // A fájlt hozzáadjuk a formData-hoz
+};
 </script>
 
 <template>
@@ -30,7 +35,6 @@ const formData = reactive({
           <p v-if="errors.title" class="text-red-500 text-sm mt-2">{{ errors.title[0] }}</p>
         </div>
 
-
         <div>
           <label for="body" class="block text-lg font-semibold text-[#131213] mb-2">Post Content</label>
           <textarea
@@ -43,6 +47,17 @@ const formData = reactive({
           <p v-if="errors.content" class="text-red-500 text-sm mt-2">{{ errors.content[0] }}</p>
         </div>
 
+        <!-- File input for the image -->
+        <div>
+          <label for="image" class="block text-lg font-semibold text-[#131213] mb-2">Upload Image</label>
+          <input
+            type="file"
+            id="image"
+            @change="handleFileChange"
+            class="w-full p-4 bg-[#F9F9F9] border-2 border-[#D1D5DB] rounded-md focus:outline-none focus:border-[#6ABC5C] transition"
+          />
+          <p v-if="errors.image" class="text-red-500 text-sm mt-2">{{ errors.image[0] }}</p>
+        </div>
 
         <div class="text-center">
           <button

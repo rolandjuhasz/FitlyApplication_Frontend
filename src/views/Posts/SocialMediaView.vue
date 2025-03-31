@@ -86,8 +86,13 @@ const formatDate = (dateString) => {
 
         <p class="text-[#131213] mb-4">{{ post.content }}</p>
 
-        <div v-if="post.image_url" class="mb-4">
-          <img :src="post.image_url" :alt="post.title" class="w-full h-auto rounded-lg" />
+        <div v-if="post.image_path" class="mb-4">
+          <img 
+  :src="post.image_url ? post.image_url : 'https://via.placeholder.com/300'" 
+  alt="Post image" 
+  class="rounded-lg w-full h-auto object-cover"
+/>
+
         </div>
 
         <div class="flex items-center gap-3 mb-4">

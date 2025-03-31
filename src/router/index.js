@@ -8,6 +8,7 @@ import UpdateView from '@/views/Posts/UpdateView.vue'
 import ProfileView from '@/views/Profile/ProfileView.vue'
 import CreatePostView from '@/views/Posts/CreatePostView.vue'
 import WorkoutView from '@/views/Workout/WorkoutView.vue'
+import CreateRecipesView from '@/views/Workout/CreateRecipesView.vue'
 // import ShowView from '@/views/Posts/ShowView.vue'
 
 const router = createRouter({
@@ -56,6 +57,13 @@ const router = createRouter({
       path: "/posts/update/:id",
       name: "update",
       component: UpdateView,
+      meta: { auth: true },
+    },
+
+    {
+      path: "/addrecipe",
+      name: "addrecipe",
+      component: CreateRecipesView,
       meta: { auth: true },
     },
 

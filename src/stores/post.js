@@ -35,26 +35,37 @@ export const usePostsStore = defineStore("postsStore", {
     /******************* Create a post *******************/
     async createPost(formData) {
       const toast = useToast();
+      const form = new FormData(); // Új FormData objektum létrehozása
+    
+      // Hozzáadjuk a formData tartalmát a FormData objektumhoz
+      form.append("title", formData.title);
+      form.append("content", formData.content);
+      if (formData.image) {
+        form.append("image", formData.image); // A kép hozzáadása
+      }
+    
       const res = await fetch("/api/posts", {
-        method: "post",
+        method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          // Ne adjunk meg `Content-Type`-ot, mert a böngésző automatikusan beállítja a FormData-hoz
         },
-        body: JSON.stringify(formData),
+        body: form, // FormData küldése
       });
-      
+    
       const data = await res.json();
-      if(res.ok) {
-        toast.success("A poszt sikeresen létrehozva!", {timeout: 2000})
+      if (res.ok) {
+        toast.success("A poszt sikeresen létrehozva!", { timeout: 2000 });
       }
-      
+    
       if (data.errors) {
         this.errors = data.errors;
       } else {
         this.router.push({ name: "posts" });
-        this.errors = {}
+        this.errors = {};
       }
     },
+    
     /******************* Delete a post *******************/
     async deletePost(post) {
       const authStore = useAuthStore();
