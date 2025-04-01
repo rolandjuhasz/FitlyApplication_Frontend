@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { useToast } from "vue-toastification";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const useRecipesStore = defineStore("recipesStore", {
   state: () => ({
@@ -18,7 +19,7 @@ export const useRecipesStore = defineStore("recipesStore", {
   actions: {
     /******************* Get all recipes *******************/
     async getAllRecipes() {
-      const res = await fetch("/api/recipes");
+      const res = await fetch(`${API_BASE_URL}/recipes`);
       const data = await res.json();
       this.recipes = data;
       return data;
@@ -26,7 +27,7 @@ export const useRecipesStore = defineStore("recipesStore", {
 
     /******************* Get a single recipe *******************/
     async getRecipe(id) {
-      const res = await fetch(`/api/recipes/${id}`);
+      const res = await fetch(`${API_BASE_URL}/recipes/${id}`);
       const data = await res.json();
       return data.recipe ?? data;
     },
@@ -34,7 +35,7 @@ export const useRecipesStore = defineStore("recipesStore", {
     /******************* Create a new recipe *******************/
     async createRecipe(formData) {
       const toast = useToast();
-      const res = await fetch("/api/recipes", {
+      const res = await fetch(`${API_BASE_URL}/recipes`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
