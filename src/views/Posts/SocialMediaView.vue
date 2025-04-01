@@ -8,7 +8,8 @@ import { useReactionStore } from "@/stores/reaction";
 
 
 const authStore = useAuthStore();
-const { getAllPosts } = usePostsStore();
+const postStore = usePostsStore();
+const { getAllPosts, deletePost } = usePostsStore();
 const { getComments } = useCommentsStore();
 const reactionStore = useReactionStore();
 
@@ -41,6 +42,11 @@ onMounted(async () => {
     await loadComments(post);
   }
 });
+
+onMounted(async () => {
+  posts.value = await getAllPosts();
+});
+
 
 const nextPage = (post) => {
   post.currentPage++;
@@ -83,41 +89,38 @@ const formatDate = (dateString) => {
           Posted by  
           <span class="text-green-800 font-bold">{{ post.user.name }}</span>
         </p>
-
-        <p class="text-[#131213] mb-4">{{ post.content }}</p>
-
-        <div v-if="post.image_path" class="mb-4">
+        <p class="text-[#131213] mb-4 text-center text-justify">{{ post.content }}</p>
+        <div class="flex justify-center items-center">
+          <div class="flex justify-center items-center">
           <img 
-  :src="post.image_url ? post.image_url : 'https://via.placeholder.com/300'" 
-  alt="Post image" 
-  class="rounded-lg w-full h-auto object-cover"
-/>
-
+            :src="`http://127.0.0.1:8000/storage/${post.image_path}`"
+            alt="Post image"
+            class="rounded-lg w-auto h-60 max-w-[500px] object-cover"
+          />
         </div>
+      </div>
+
 
         <div class="flex items-center gap-3 mb-4">
-  <button 
-    @click="reactionStore.toggleReaction(post, 'like')" 
-    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-blue-200 transition">
-    👍
-  </button>
-  <button 
-    @click="reactionStore.toggleReaction(post, 'dislike')" 
-    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-red-200 transition">
-    👎
-  </button>
-  <button 
-    @click="reactionStore.toggleReaction(post, 'love')" 
-    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-pink-200 transition">
-    ❤️
-  </button>
-</div>
+          <button 
+            @click="reactionStore.toggleReaction(post, 'like')" 
+            class="px-3 py-2 rounded-full bg-gray-200 hover:bg-blue-200 transition">
+            👍
+          </button>
+          <button 
+            @click="reactionStore.toggleReaction(post, 'dislike')" 
+            class="px-3 py-2 rounded-full bg-gray-200 hover:bg-red-200 transition">
+            👎
+          </button>
+          <button 
+            @click="reactionStore.toggleReaction(post, 'love')" 
+            class="px-3 py-2 rounded-full bg-gray-200 hover:bg-pink-200 transition">
+            ❤️
+          </button>
+      </div>
 
-
-        <div class="mb-6">
+  <div class="mb-6">
     <h3 class="text-lg font-bold text-[#131213] mb-4">Comments</h3>
-    
-
     <div v-if="post.comments && post.comments.length > 0" class="space-y-4">
         <div v-for="comment in post.comments" :key="comment.id" class="flex items-start space-x-3">
             <img :src="comment.user.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
@@ -125,10 +128,6 @@ const formatDate = (dateString) => {
                 <p class="text-[#131213] font-semibold">{{ comment.user.name }}</p>
                 <p class="text-[#131213]">{{ comment.content }}</p>
                 <div class="mt-2 text-sm text-[#65676B]">
-                    <span class="cursor-pointer hover:underline">Like</span>
-                    <span class="mx-2">·</span>
-                    <span class="cursor-pointer hover:underline">Reply</span>
-                    <span class="mx-2">·</span>
                     <span class="text-[#65676B]">{{ formatDate(comment.created_at) }}</span>
                 </div>
             </div>
@@ -153,8 +152,8 @@ const formatDate = (dateString) => {
               Post Comment
           </button>
       </div>
-</form>
-</div>
+    </form>
+  </div>
         <div v-if="authStore.user && authStore.user.id === post.user_id" class="flex items-center gap-6 mt-6">
           <form @submit.prevent="deletePost(post)">
             <button class="text-red-500 font-bold px-2 py-1 border border-red-300">Delete</button>

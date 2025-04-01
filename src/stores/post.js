@@ -81,7 +81,7 @@ export const usePostsStore = defineStore("postsStore", {
         const data = await res.json();
         if (res.ok) {
           toast.error("A poszt törölve!", {timeout: 2000})
-          this.router.push({ name: "home" });
+          this.router.push({ name: "posts" });
         }
         console.log(data);
       }
@@ -89,23 +89,25 @@ export const usePostsStore = defineStore("postsStore", {
     /******************* Update a post *******************/
     async updatePost(post, formData) {
       const authStore = useAuthStore();
-      const toast = useToast()
+      const toast = useToast();
       if (authStore.user.id === post.user_id) {
         const res = await fetch(`/api/posts/${post.id}`, {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json', // Beállítjuk a Content-Type-t
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formData), // JSON küldése a formData alapján
         });
-
+    
         const data = await res.json();
         if (data.errors) {
           this.errors = data.errors;
         } else {
-          toast.success("Sikeres módosítás!", {timeout: 2000})
+          toast.success("Sikeres módosítás!", { timeout: 2000 });
           this.router.push({ name: "posts" });
-          this.errors = {}
+          this.errors = {};
         }
       }
     },

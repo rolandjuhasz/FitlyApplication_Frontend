@@ -1,21 +1,21 @@
 <script setup>
-import { computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRecipesStore } from "@/stores/recipes";
 
 const recipesStore = useRecipesStore();
+const selectedRecipe = ref(null);
 
 onMounted(() => {
   recipesStore.getAllRecipes();
 });
 
-const getProfileImageUrl = recipesStore.getProfileImageUrl;
+const openModal = (recipe) => {
+  selectedRecipe.value = recipe;
+};
 
-const profileImage = computed(() => {
-  if (!authStore.user || !authStore.user.profile_image) {
-    return "/src/assets/images/default-user.jpg";
-  }
-  return `${import.meta.env.VITE_API_URL}/storage/${recipesStore.image_path}`;
-});
+const closeModal = () => {
+  selectedRecipe.value = null;
+};
 </script>
 
 <template>
@@ -26,24 +26,50 @@ const profileImage = computed(() => {
       <div 
         v-for="recipe in recipesStore.recipes" 
         :key="recipe.id" 
-        class="bg-[#1E1E1E] text-white p-4 rounded-xl shadow-lg w-80"
+        class="bg-[#1E1E1E] text-white p-4 rounded-xl shadow-lg w-80 h-96 flex flex-col"
       >
         <img 
           :src="recipe.image_urls.length ? recipe.image_urls[0] : 'https://via.placeholder.com/300'"
           alt="Recipe image" 
-          class="rounded-lg w-full h-48 object-cover"
+          class="rounded-lg w-full h-40 object-cover"
         />
 
-        <h2 class="text-xl font-semibold mt-4">{{ recipe.name }}</h2>
-        <p class="text-sm text-gray-400 mt-2">{{ recipe.description }}</p>
+        <h2 class="text-xl font-semibold mt-4">{{ recipe.title }}</h2>
+        <p class="text-sm text-gray-400 mt-2 line-clamp-3 overflow-hidden">{{ recipe.description }}</p>
 
-        <button class="mt-4 bg-[#FF6B6B] text-white px-4 py-2 rounded-lg">
+        <button 
+          class="mt-auto bg-[#FF6B6B] text-white px-4 py-2 rounded-lg"
+          @click="openModal(recipe)"
+        >
           Megnézem
         </button>
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div v-if="selectedRecipe" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6">
+    <div class="bg-[#1E1E1E] text-white p-6 rounded-xl shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+      <button @click="closeModal" class="absolute top-4 right-4 text-xl">&times;</button>
+      <img 
+        :src="selectedRecipe.image_urls.length ? selectedRecipe.image_urls[0] : 'https://via.placeholder.com/300'"
+        alt="Recipe image" 
+        class="rounded-lg w-full h-64 object-cover"
+      />
+      <h2 class="text-2xl font-semibold mt-4">{{ selectedRecipe.name }}</h2>
+      <p class="text-gray-400 mt-2">{{ selectedRecipe.description }}</p>
+      <p class="mt-4"><strong>Elkészítési idő:</strong> {{ selectedRecipe.avg_time }}</p>
+      <p class="mt-2"><strong>Hozzávalók:</strong></p>
+      <p>{{ selectedRecipe.ingredients }}</p>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 </style>
