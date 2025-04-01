@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const useAuthStore = defineStore("authStore", {
   state: () => {
     return {
@@ -11,7 +11,7 @@ export const useAuthStore = defineStore("authStore", {
     /******************* Get authenticated user *******************/
     async getUser() {
       if (localStorage.getItem("token")) {
-        const res = await fetch(`${API_BASE_URL}/user`, {
+        const res = await fetch("/api/user", {
           headers: {
             authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -24,7 +24,7 @@ export const useAuthStore = defineStore("authStore", {
     },
     /******************* Login or Register user *******************/
     async authenticate(apiRoute, formData) {
-      const res = await fetch(`${API_BASE_URL}/${apiRoute}`, {
+      const res = await fetch(`/api/${apiRoute}`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("authStore", {
     },
     /******************* Logout user *******************/
     async logout() {
-      const res = await fetch(`${API_BASE_URL}/logout`, {
+      const res = await fetch("/api/logout", {
         method: "post",
         headers: {
           authorization: `Bearer ${localStorage.getItem("token")}`,

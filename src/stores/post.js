@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { useToast } from "vue-toastification";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const usePostsStore = defineStore("postsStore", {
   state: () => {
     return {
@@ -19,7 +19,7 @@ export const usePostsStore = defineStore("postsStore", {
   actions: {
     /******************* Get all posts *******************/
     async getAllPosts() {
-      const res = await fetch(`${API_BASE_URL}/posts`);
+      const res = await fetch("/api/posts");
       const data = await res.json();
       this.posts = data;
 
@@ -27,7 +27,7 @@ export const usePostsStore = defineStore("postsStore", {
     },
     /******************* Get a post *******************/
     async getPost(post) {
-      const res = await fetch(`${API_BASE_URL}/posts/${post}`);
+      const res = await fetch(`/api/posts/${post}`);
       const data = await res.json();
 
       return data.post ?? data;
@@ -35,21 +35,22 @@ export const usePostsStore = defineStore("postsStore", {
     /******************* Create a post *******************/
     async createPost(formData) {
       const toast = useToast();
-      const form = new FormData();
+      const form = new FormData(); // Új FormData objektum létrehozása
     
+      // Hozzáadjuk a formData tartalmát a FormData objektumhoz
       form.append("title", formData.title);
       form.append("content", formData.content);
       if (formData.image) {
-        form.append("image", formData.image); 
+        form.append("image", formData.image); // A kép hozzáadása
       }
     
-      const res = await fetch(`${API_BASE_URL}/posts`, {
+      const res = await fetch("/api/posts", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-
+          // Ne adjunk meg `Content-Type`-ot, mert a böngésző automatikusan beállítja a FormData-hoz
         },
-        body: form, 
+        body: form, // FormData küldése
       });
     
       const data = await res.json();
@@ -70,7 +71,7 @@ export const usePostsStore = defineStore("postsStore", {
       const authStore = useAuthStore();
       const toast = useToast()
       if (authStore.user.id === post.user_id) {
-        const res = await fetch(`${API_BASE_URL}/posts/${post.id}`, {
+        const res = await fetch(`/api/posts/${post.id}`, {
           method: "delete",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -90,14 +91,14 @@ export const usePostsStore = defineStore("postsStore", {
       const authStore = useAuthStore();
       const toast = useToast();
       if (authStore.user.id === post.user_id) {
-        const res = await fetch(`${API_BASE_URL}/posts/${post.id}`, {
+        const res = await fetch(`/api/posts/${post.id}`, {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             Accept: 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', // Beállítjuk a Content-Type-t
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formData), // JSON küldése a formData alapján
         });
     
         const data = await res.json();
