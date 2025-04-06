@@ -64,7 +64,6 @@ const closeModal = () => {
       <p>{{ selectedRecipe.ingredients }}</p>
     </div>
   </div>
-</main>
 </template>
 
 <style scoped>

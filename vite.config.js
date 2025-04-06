@@ -18,9 +18,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-  server: {
+  server: process.env.NODE_ENV === "development" ? {
     proxy: {
-      '/api' : {
+      '/api': {
         target: "http://127.0.0.1:8000",
         changeOrigin: true,
         headers: {
@@ -28,5 +28,5 @@ export default defineConfig({
         }
       }
     }
-  }
+  } : undefined
 })
