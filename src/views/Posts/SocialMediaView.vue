@@ -11,6 +11,7 @@ const authStore = useAuthStore();
 const { getAllPosts, deletePost } = usePostsStore();
 const { getComments } = useCommentsStore();
 const reactionStore = useReactionStore();
+const postStore = usePostsStore();
 
 const posts = ref([]);
 const commentsPerPage = 3;
@@ -71,6 +72,12 @@ const formatDate = (dateString) => {
   }).replace(/\./g, "-").replace(" ", "");
 };
 
+const getPostImageUrl = postStore.getPostImageUrl;
+
+const postImage = computed(() => {
+  return `${import.meta.env.VITE_API_URL}/storage/${postStore.image_path}`;
+});
+
 </script>
 
 <template>
@@ -101,10 +108,10 @@ const formatDate = (dateString) => {
 
         <div v-if="post.image_path" class="mb-4">
           <img 
-  :src="post.image_url ? post.image_url : 'https://via.placeholder.com/300'" 
-  alt="Post image" 
-  class="rounded-lg w-full h-auto object-cover"
-/>
+            :src="`http://127.0.0.1:8000/storage/${post.image_path}`"
+            alt="Post image"
+            class="rounded-lg w-auto h-60 max-w-[500px] object-cover"
+          />
 
         </div>
 

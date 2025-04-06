@@ -9,6 +9,15 @@ onMounted(() => {
   recipesStore.getAllRecipes();
 });
 
+const getProfileImageUrl = recipesStore.getProfileImageUrl;
+
+const profileImage = computed(() => {
+   if (!authStore.user || !authStore.user.profile_image) {
+     return "/src/assets/images/default-user.jpg";
+   }
+   return `${import.meta.env.VITE_API_URL}/storage/${recipesStore.image_path}`;
+ });
+
 const openModal = (recipe) => {
   selectedRecipe.value = recipe;
 };
@@ -64,6 +73,7 @@ const closeModal = () => {
       <p>{{ selectedRecipe.ingredients }}</p>
     </div>
   </div>
+  </main>
 </template>
 
 <style scoped>

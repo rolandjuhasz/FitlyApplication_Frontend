@@ -35,13 +35,12 @@ export const usePostsStore = defineStore("postsStore", {
     /******************* Create a post *******************/
     async createPost(formData) {
       const toast = useToast();
-      const form = new FormData(); // Új FormData objektum létrehozása
+      const form = new FormData();
     
-      // Hozzáadjuk a formData tartalmát a FormData objektumhoz
       form.append("title", formData.title);
       form.append("content", formData.content);
       if (formData.image) {
-        form.append("image", formData.image); // A kép hozzáadása
+        form.append("image", formData.image);
       }
     
       const res = await fetch("/api/posts", {
@@ -95,9 +94,9 @@ export const usePostsStore = defineStore("postsStore", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             Accept: 'application/json',
-            'Content-Type': 'application/json', // Beállítjuk a Content-Type-t
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData), // JSON küldése a formData alapján
+          body: JSON.stringify(formData),
         });
     
         const data = await res.json();
@@ -110,5 +109,10 @@ export const usePostsStore = defineStore("postsStore", {
         }
       }
     },
+
+    getPostImageUrl(path) {
+      return `${import.meta.env.VITE_API_URL}/storage/${path}`;
+    }
+    
   },
 });
