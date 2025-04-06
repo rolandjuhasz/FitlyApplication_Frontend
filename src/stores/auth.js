@@ -5,6 +5,7 @@ export const useAuthStore = defineStore("authStore", {
     return {
       user: null,
       errors: {},
+      avatars: []
     };
   },
   actions: {
@@ -59,6 +60,44 @@ export const useAuthStore = defineStore("authStore", {
         this.errors = {};
         localStorage.removeItem("token");
         this.router.push({ name: "home" });
+      }
+    },
+    /******************* Avatar *******************/
+    getProfileImageUrl(imagePath) {
+      const imageBaseUrl = "http://127.0.0.1:8000/storage/";
+      return `${imageBaseUrl}${imagePath}`;
+    },
+    /******************* Avatar *******************/
+    async uploadAvatar(formData) {
+      try {
+        const res = await fetch("/api/user/avatar", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: formData,
+        });
+    
+        const data = await res.json();
+        
+        if (!res.ok) {
+          throw new Error(data.message || 'Avatar feltöltése sikertelen');
+        }
+    
+        if (data.errors) {
+          this.errors = data.errors;
+          throw new Error('Hiba történt a feltöltés során');
+        }
+    
+        if (data.avatar_path) {
+          this.user.avatar = data.avatar_path;
+        }
+
+        return data;
+
+      } catch (error) {
+        console.error('Avatar upload error:', error);
+        throw error;
       }
     },
   },

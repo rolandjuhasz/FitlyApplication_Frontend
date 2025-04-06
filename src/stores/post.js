@@ -48,9 +48,8 @@ export const usePostsStore = defineStore("postsStore", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          // Ne adjunk meg `Content-Type`-ot, mert a böngésző automatikusan beállítja a FormData-hoz
         },
-        body: form, // FormData küldése
+        body: form,
       });
     
       const data = await res.json();

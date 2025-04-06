@@ -35,18 +35,18 @@ onMounted(async () => {
 <template>
   <main class="bg-[#F4F4F9] min-h-screen flex justify-center items-center py-10">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
-      <h1 class="text-3xl font-bold text-[#131213] mb-6 text-center">Update your post</h1>
+      <h1 class="text-3xl font-bold text-[#131213] mb-6 text-center">Módosítás</h1>
 
       <form
         @submit.prevent="updatePost(post, formData)"
         class="space-y-6"
       >
         <div>
-          <label for="title" class="block text-lg font-semibold text-[#131213] mb-2">Post Title</label>
+          <label for="title" class="block text-lg font-semibold text-[#131213] mb-2">Poszt címe</label>
           <input
             type="text"
             id="title"
-            placeholder="Enter your post title"
+            placeholder="Írd be a poszt címét"
             v-model="formData.title"
             class="w-full p-4 bg-[#F9F9F9] border-2 border-[#D1D5DB] rounded-md focus:outline-none focus:border-[#6ABC5C] transition"
           />
@@ -54,11 +54,11 @@ onMounted(async () => {
         </div>
 
         <div>
-          <label for="content" class="block text-lg font-semibold text-[#131213] mb-2">Post Content</label>
+          <label for="content" class="block text-lg font-semibold text-[#131213] mb-2">Poszt leírása</label>
           <textarea
             id="content"
             rows="6"
-            placeholder="Enter your post content"
+            placeholder="Poszt tartalma..."
             v-model="formData.content"
             class="w-full p-4 bg-[#F9F9F9] border-2 border-[#D1D5DB] rounded-md focus:outline-none focus:border-[#6ABC5C] transition"
           ></textarea>
@@ -70,7 +70,7 @@ onMounted(async () => {
             type="submit"
             class="w-full py-3 bg-[#6ABC5C] text-white font-semibold rounded-md hover:bg-[#5aa34d] transition duration-300"
           >
-            Update Post
+            Módosítás
           </button>
         </div>
       </form>

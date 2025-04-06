@@ -24,11 +24,11 @@ const handleFileChange = (event) => {
 
       <form @submit.prevent="createPost(formData)" class="space-y-6">
         <div>
-          <label for="title" class="block text-lg font-semibold text-[#131213] mb-2">Post Title</label>
+          <label for="title" class="block text-lg font-semibold text-[#131213] mb-2">Poszt címe</label>
           <input
             type="text"
             id="title"
-            placeholder="Enter your post title"
+            placeholder="Írd le a poszt címét"
             v-model="formData.title"
             class="w-full p-4 bg-[#F9F9F9] border-2 border-[#D1D5DB] rounded-md focus:outline-none focus:border-[#6ABC5C] transition"
           />
@@ -36,11 +36,11 @@ const handleFileChange = (event) => {
         </div>
 
         <div>
-          <label for="body" class="block text-lg font-semibold text-[#131213] mb-2">Post Content</label>
+          <label for="body" class="block text-lg font-semibold text-[#131213] mb-2">Poszt tartalma</label>
           <textarea
             id="body"
             rows="6"
-            placeholder="Enter your post content"
+            placeholder="Poszt tartalma..."
             v-model="formData.content"
             class="w-full p-4 bg-[#F9F9F9] border-2 border-[#D1D5DB] rounded-md focus:outline-none focus:border-[#6ABC5C] transition"
           ></textarea>
@@ -49,7 +49,7 @@ const handleFileChange = (event) => {
 
         <!-- File input for the image -->
         <div>
-          <label for="image" class="block text-lg font-semibold text-[#131213] mb-2">Upload Image</label>
+          <label for="image" class="block text-lg font-semibold text-[#131213] mb-2">Kép feltöltése</label>
           <input
             type="file"
             id="image"
@@ -64,7 +64,7 @@ const handleFileChange = (event) => {
             type="submit"
             class="w-full py-3 bg-[#6ABC5C] text-white font-semibold rounded-md hover:bg-[#5aa34d] transition duration-300"
           >
-            Create Post
+            Posztolás
           </button>
         </div>
       </form>
