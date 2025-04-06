@@ -109,10 +109,5 @@ export const usePostsStore = defineStore("postsStore", {
         }
       }
     },
-
-    getPostImageUrl(path) {
-      return `${import.meta.env.VITE_API_URL}/storage/${path}`;
-    }
-    
   },
 });

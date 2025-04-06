@@ -43,9 +43,6 @@ onMounted(async () => {
   }
 });
 
-onMounted(async () => {
-  posts.value = await getAllPosts();
-});
 
 
 const nextPage = (post) => {
@@ -116,28 +113,26 @@ const postImage = computed(() => {
         </div>
 
         <div class="flex items-center gap-3 mb-4">
-  <button 
-    @click="reactionStore.toggleReaction(post, 'like')" 
-    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-blue-200 transition">
-    👍
-  </button>
-  <button 
-    @click="reactionStore.toggleReaction(post, 'dislike')" 
-    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-red-200 transition">
-    👎
-  </button>
-  <button 
-    @click="reactionStore.toggleReaction(post, 'love')" 
-    class="px-3 py-2 rounded-full bg-gray-200 hover:bg-pink-200 transition">
-    ❤️
-  </button>
-</div>
-
+          <button 
+            @click="reactionStore.toggleReaction(post, 'like')" 
+            class="px-3 py-2 rounded-full bg-gray-200 hover:bg-blue-200 transition">
+            👍
+          </button>
+          <button 
+            @click="reactionStore.toggleReaction(post, 'dislike')" 
+            class="px-3 py-2 rounded-full bg-gray-200 hover:bg-red-200 transition">
+            👎
+          </button>
+          <button 
+            @click="reactionStore.toggleReaction(post, 'love')" 
+            class="px-3 py-2 rounded-full bg-gray-200 hover:bg-pink-200 transition">
+            ❤️
+          </button>
+        </div>
 
         <div class="mb-6">
-    <h3 class="text-lg font-bold text-[#131213] mb-4">Comments</h3>
+        <h3 class="text-lg font-bold text-[#131213] mb-4">Comments</h3>
     
-
     <div v-if="post.comments && post.comments.length > 0" class="space-y-4">
         <div v-for="comment in post.comments" :key="comment.id" class="flex items-start space-x-3">
               <img 
@@ -149,10 +144,7 @@ const postImage = computed(() => {
                 <p class="text-[#131213] font-semibold">{{ comment.user.name }}</p>
                 <p class="text-[#131213]">{{ comment.content }}</p>
                 <div class="mt-2 text-sm text-[#65676B]">
-                    <span class="cursor-pointer hover:underline">Like</span>
-                    <span class="mx-2">·</span>
-                    <span class="cursor-pointer hover:underline">Reply</span>
-                    <span class="mx-2">·</span>
+
                     <span class="text-[#65676B]">{{ formatDate(comment.created_at) }}</span>
                 </div>
             </div>
