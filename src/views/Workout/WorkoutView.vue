@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRecipesStore } from "@/stores/recipes";
+import MealView from "./MealView.vue";
 
 const recipesStore = useRecipesStore();
 const selectedRecipe = ref(null);
@@ -20,6 +21,7 @@ const closeModal = () => {
 
 <template>
   <main class="bg-[#131213] min-h-screen">
+      <MealView />
     <div class="container mx-auto px-4 py-12 max-w-7xl">
       <header class="mb-12 text-center">
         <h1 class="text-4xl font-bold text-white mb-2">Recept Kincsei</h1>
@@ -66,10 +68,8 @@ const closeModal = () => {
       </div>
     </div>
 
-    <!-- Modal -->
     <div v-if="selectedRecipe" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div class="bg-[#002128] text-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
-        <!-- FIXED CLOSE BUTTON -->
         <button 
           @click="closeModal" 
           class="sticky top-4 right-4 ml-auto bg-[#6ABC5C] hover:bg-[#4d8b48] text-white rounded-full p-3 shadow-lg z-10 transition-colors flex items-center justify-center"

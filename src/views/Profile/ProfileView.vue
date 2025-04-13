@@ -142,6 +142,12 @@ const handleFileUpload = async (event) => {
     event.target.value = '';
   }
 };
+
+const remainingCalories = computed(() => {
+  const recommendedCalories = authStore.user.recommended_calories
+  const consumedCalories = authStore.user.totalConsumedCalories || 0;
+  return recommendedCalories - consumedCalories;
+});
 </script>
 
 <template>
@@ -206,7 +212,7 @@ const handleFileUpload = async (event) => {
           </div>
 
           <div v-if="selectedTab === 'calories'" class="glassmorphism">
-            <h2>Napi kalóriabevitel: <span class="font-bold">{{ authStore.user.recommended_calories || 'Nincs adat' }}</span></h2>
+            <h2>Napi kalóriabevitel: <span class="font-bold">{{ remainingCalories || 'Nincs adat' }}</span></h2>
             <h2>Heti cél: <span class="font-bold">{{ authStore.user.weekly_goal || 'Nincs adat' }}</span></h2>
           </div>
 

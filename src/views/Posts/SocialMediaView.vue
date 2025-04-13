@@ -131,7 +131,7 @@ const postImage = computed(() => {
         </div>
 
         <div class="mb-6">
-        <h3 class="text-lg font-bold text-[#131213] mb-4">Comments</h3>
+        <h3 class="text-lg font-bold text-[#131213] mb-4">Kommentek</h3>
     
     <div v-if="post.comments && post.comments.length > 0" class="space-y-4">
         <div v-for="comment in post.comments" :key="comment.id" class="flex items-start space-x-3">
