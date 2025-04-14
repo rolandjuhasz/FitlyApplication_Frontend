@@ -12,7 +12,7 @@ export const useMealStore = defineStore("mealStore", {
   actions: {
     /*************** Get all meals (admin or debug use) ***************/
     async getAllMeals() {
-      const token = localStorage.getItem('token');  // vagy más helyen tárolt token
+      const token = localStorage.getItem('token');
       const res = await fetch('/api/meals', {
         method: 'GET',
         headers: {
@@ -55,6 +55,40 @@ export const useMealStore = defineStore("mealStore", {
         this.errors = data.errors;
       } else {
         this.errors = {};
+      }
+    },
+
+    async createMeal(mealData) {
+      const toast = useToast();
+      const authStore = useAuthStore();
+    
+      const res = await fetch('/api/meals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(mealData),
+      });
+    
+      const data = await res.json();
+    
+      if (res.ok) {
+        toast.success("Új étel sikeresen hozzáadva!", { timeout: 2000 });
+        
+        if (authStore.user.recommended_calories >= mealData.kcal) {
+          authStore.user.recommended_calories -= mealData.kcal;
+          authStore.user = { ...authStore.user };
+        } else {
+          toast.warning("Az étel hozzáadva, de nincs elég kalória a napi keretből!", { timeout: 2000 });
+        }
+        
+        await this.getAllMeals();
+        return data;
+      } else {
+        toast.error("Hiba történt az étel hozzáadásakor!", { timeout: 2000 });
+        this.errors = data.errors ?? {};
+        return null;
       }
     },
 

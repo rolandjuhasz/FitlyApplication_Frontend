@@ -22,11 +22,12 @@ const calculateAge = (birthday) => {
 
 const calculateRecommendedCalories = () => {
   const { height, weight, age, lose_or_gain } = editableUser.value;
-  let bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+  let bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age) -700;
   const tdee = bmr * 1.55;
   
   return Math.round(lose_or_gain === 'lose' ? tdee - 500 : tdee + 500);
 };
+
 
 const calculateWeeklyGoal = () => {
   const { lose_or_gain } = editableUser.value;
@@ -213,7 +214,6 @@ const remainingCalories = computed(() => {
 
           <div v-if="selectedTab === 'calories'" class="glassmorphism">
             <h2>Napi kalóriabevitel: <span class="font-bold">{{ remainingCalories || 'Nincs adat' }}</span></h2>
-            <h2>Heti cél: <span class="font-bold">{{ authStore.user.weekly_goal || 'Nincs adat' }}</span></h2>
           </div>
 
           <div v-if="selectedTab === 'bodyStats'" class="glassmorphism relative p-4">

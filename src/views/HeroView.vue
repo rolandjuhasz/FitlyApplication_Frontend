@@ -35,14 +35,19 @@ const features = ref([
         <h1 class="text-7xl font-extrabold text-[#6ABC5C] drop-shadow-lg">Formáld a jövődet!</h1>
       </Motion>
       <Motion :initial="{ opacity: 0 }" :animate="{ opacity: 1 }" :transition="{ delay: 0.5 }">
-        <p class="text-xl text-[#C7C8C7] mt-4 max-w-xl mx-auto">
+        <p class="text-xl text-[#C7C8C7] mt-5 max-w-xl mx-auto">
           Építsd fel az álomtested, kezdd el most az edzést!
         </p>
       </Motion>
       <Motion :initial="{ scale: 0.8, opacity: 0 }" :animate="{ scale: 1, opacity: 1 }" :transition="{ delay: 0.8 }">
-        <button class="mt-6 px-10 py-4 bg-[#6ABC5C] text-[#131213] font-semibold rounded-2xl shadow-xl hover:bg-[#4d8b48] transition-all transform hover:scale-110 animate-glow">
-          Kezdés
-        </button>
+        <RouterLink 
+  :to="{name: 'workout'}" 
+  class="mia py-4 px-6 bg-[#6ABC5C] text-[#131213] font-semibold rounded-2xl shadow-xl hover:bg-[#4d8b48] transition-all transform hover:scale-110 animate-glow mt-6 inline-block"
+>
+  Kezdés
+</RouterLink>
+
+
       </Motion>
     </section>
 
