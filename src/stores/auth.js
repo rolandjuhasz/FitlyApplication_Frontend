@@ -9,7 +9,7 @@ export const useAuthStore = defineStore("authStore", {
     };
   },
   actions: {
-    /******************* Get authenticated user *******************/
+
     async getUser() {
       if (localStorage.getItem("token")) {
         const res = await fetch("/api/user", {
@@ -23,7 +23,7 @@ export const useAuthStore = defineStore("authStore", {
         }
       }
     },
-    /******************* Login or Register user *******************/
+
     async authenticate(apiRoute, formData) {
       const res = await fetch(`/api/${apiRoute}`, {
         method: "post",
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore("authStore", {
         this.router.push({ name: "home" });
       }
     },
-    /******************* Logout user *******************/
+
     async logout() {
       const res = await fetch("/api/logout", {
         method: "post",
@@ -62,12 +62,12 @@ export const useAuthStore = defineStore("authStore", {
         this.router.push({ name: "home" });
       }
     },
-    /******************* Avatar *******************/
+
     getProfileImageUrl(imagePath) {
       const imageBaseUrl = "http://127.0.0.1:8000/storage/";
       return `${imageBaseUrl}${imagePath}`;
     },
-    /******************* Avatar *******************/
+
     async uploadAvatar(formData) {
       try {
         const res = await fetch("/api/user/avatar", {

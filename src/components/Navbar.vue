@@ -43,8 +43,8 @@ const toggleMenu = () => {
   <div v-if="isMenuOpen" class="md:hidden bg-[#131213] p-4">
     <ul class="flex flex-col space-y-4 text-lg text-center">
       <li><RouterLink :to="{ name: 'home' }" class="nav-link" active-class="active">Kezdőlap</RouterLink></li>
-      <li><RouterLink :to="{ name: 'workout' }" class="nav-link" active-class="active">Workouts</RouterLink></li>
-      <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Social media</RouterLink></li>
+      <li><RouterLink :to="{ name: 'workout' }" class="nav-link" active-class="active">Változass!</RouterLink></li>
+      <li><RouterLink :to="{ name: 'posts' }" class="nav-link" active-class="active">Közösség</RouterLink></li>
       <li v-if="authStore.user"><RouterLink :to="{ name: 'profile' }" class="nav-link" active-class="active">Profil</RouterLink></li>
       <li v-if="!authStore.user"><RouterLink :to="{name: 'register'}" class="auth-btn block">Regisztráció</RouterLink></li>
       <li v-if="!authStore.user"><RouterLink :to="{name: 'login'}" class="auth-btn block bg-transparent border-2 border-[#6ABC5C] text-[#6ABC5C] hover:bg-[#6ABC5C] hover:text-[#131213]">Bejelentkezés</RouterLink></li>
